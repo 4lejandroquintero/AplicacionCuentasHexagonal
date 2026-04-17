@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: aplicacion-cuentas-hexagonal
+  datasource:
+    url: jdbc:postgresql://localhost:5430/aplicacion_cuentas
+    username: aplicacion_cuentas
+    password: aplicacion_cuentas
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+    show-sql: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.hibernate.SQL: warn
