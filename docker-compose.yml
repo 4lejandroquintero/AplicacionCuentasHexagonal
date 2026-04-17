@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aplicacion-cuentas-db
+    environment:
+      POSTGRES_DB: aplicacion_cuentas
+      POSTGRES_USER: aplicacion_cuentas
+      POSTGRES_PASSWORD: aplicacion_cuentas
+    ports:
+      - "5430:5432"
+    volumes:
+      - aplicacion_cuentas_pgdata:/var/lib/postgresql/data
+
+volumes:
+  aplicacion_cuentas_pgdata:
