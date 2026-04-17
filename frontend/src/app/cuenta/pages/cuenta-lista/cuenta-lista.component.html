@@ -1,13 +1,8 @@
 <div class="page">
-  <header class="page__header page-header-row">
-    <div>
-      <span class="page__eyebrow">Resumen</span>
-      <h1 class="page__title">Tus cuentas</h1>
-      <p class="page__lead">
-        Listado de cuentas con saldo y estado al dia.
-      </p>
-    </div>
-    <a routerLink="/cuentas/nueva" class="btn btn--primary page-header-row__cta">Nueva cuenta</a>
+  <header class="page__header">
+    <span class="page__eyebrow">Resumen</span>
+    <h1 class="page__title">Tus cuentas</h1>
+    <p class="page__lead">Listado de cuentas con saldo y estado al dia.</p>
   </header>
 
   @if (cargando()) {
