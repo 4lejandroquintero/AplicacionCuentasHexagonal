@@ -171,6 +171,12 @@ body {
   color: #fff;
 }
 
+.btn--danger {
+  background: var(--app-danger);
+  border-color: #8a1c14;
+  color: #fff;
+}
+
 .btn--ghost {
   background: transparent;
 }

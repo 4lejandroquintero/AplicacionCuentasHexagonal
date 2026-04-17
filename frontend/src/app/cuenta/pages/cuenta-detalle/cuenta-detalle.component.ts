@@ -82,6 +82,34 @@ export class CuentaDetalleComponent implements OnInit {
     this.ejecutar(this.repositorio.retirar(this.id, { monto }), this.retiro);
   }
 
+  inactivarCuenta(): void {
+    if (!this.id || this.operando() || this.cuenta()?.estado === 'CERRADA') {
+      return;
+    }
+    const ok = confirm(
+      'La cuenta quedara inactiva (estado CERRADA) y no admitira consignaciones ni retiros. Deseas continuar?'
+    );
+    if (!ok) {
+      return;
+    }
+    this.operando.set(true);
+    this.mensaje.set(null);
+    this.repositorio.inactivar(this.id).subscribe({
+      next: (c) => {
+        this.cuenta.set(c);
+        this.operando.set(false);
+      },
+      error: () => {
+        this.operando.set(false);
+        this.mensaje.set('No fue posible inactivar la cuenta.');
+      }
+    });
+  }
+
+  protected cuentaActiva(c: Cuenta): boolean {
+    return c.estado === 'ACTIVA';
+  }
+
   private ejecutar(
     accion: Observable<Cuenta>,
     formulario: typeof this.consignacion | typeof this.retiro

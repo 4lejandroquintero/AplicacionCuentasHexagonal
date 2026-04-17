@@ -9,6 +9,7 @@ export interface CuentaRepositoryPort {
   crear(payload: CrearCuentaPayload): Observable<Cuenta>;
   consignar(id: string, payload: MovimientoPayload): Observable<Cuenta>;
   retirar(id: string, payload: MovimientoPayload): Observable<Cuenta>;
+  inactivar(id: string): Observable<Cuenta>;
 }
 
 export const CUENTA_REPOSITORY = new InjectionToken<CuentaRepositoryPort>('CuentaRepositoryPort');

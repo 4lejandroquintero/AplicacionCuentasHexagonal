@@ -31,4 +31,8 @@ export class CuentaHttpRepository implements CuentaRepositoryPort {
   retirar(id: string, payload: MovimientoPayload): Observable<Cuenta> {
     return this.http.post<Cuenta>(`${this.base}/${id}/retiros`, payload);
   }
+
+  inactivar(id: string): Observable<Cuenta> {
+    return this.http.post<Cuenta>(`${this.base}/${id}/inactivacion`, {});
+  }
 }
