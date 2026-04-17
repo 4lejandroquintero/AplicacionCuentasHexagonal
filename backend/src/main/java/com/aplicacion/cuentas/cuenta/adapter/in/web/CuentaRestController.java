@@ -25,6 +25,7 @@ import com.aplicacion.cuentas.cuenta.domain.model.Account;
 import com.aplicacion.cuentas.cuenta.domain.port.in.ConsignarUseCase;
 import com.aplicacion.cuentas.cuenta.domain.port.in.ConsultarCuentaUseCase;
 import com.aplicacion.cuentas.cuenta.domain.port.in.CrearCuentaUseCase;
+import com.aplicacion.cuentas.cuenta.domain.port.in.InactivarCuentaUseCase;
 import com.aplicacion.cuentas.cuenta.domain.port.in.RetirarUseCase;
 
 @RestController
@@ -36,14 +37,17 @@ public class CuentaRestController {
 	private final ConsultarCuentaUseCase consultarCuenta;
 	private final ConsignarUseCase consignar;
 	private final RetirarUseCase retirar;
+	private final InactivarCuentaUseCase inactivarCuenta;
 	private final CuentaApiMapper mapper;
 
 	public CuentaRestController(CrearCuentaUseCase crearCuenta, ConsultarCuentaUseCase consultarCuenta,
-			ConsignarUseCase consignar, RetirarUseCase retirar, CuentaApiMapper mapper) {
+			ConsignarUseCase consignar, RetirarUseCase retirar, InactivarCuentaUseCase inactivarCuenta,
+			CuentaApiMapper mapper) {
 		this.crearCuenta = crearCuenta;
 		this.consultarCuenta = consultarCuenta;
 		this.consignar = consignar;
 		this.retirar = retirar;
+		this.inactivarCuenta = inactivarCuenta;
 		this.mapper = mapper;
 	}
 
@@ -75,5 +79,10 @@ public class CuentaRestController {
 	public CuentaResponse retirar(@PathVariable UUID id, @RequestBody @Valid MovimientoRequest request) {
 		MovimientoCommand command = new MovimientoCommand(id, request.monto());
 		return mapper.aRespuesta(retirar.retirar(command));
+	}
+
+	@PostMapping("/{id}/inactivacion")
+	public CuentaResponse inactivar(@PathVariable UUID id) {
+		return mapper.aRespuesta(inactivarCuenta.inactivar(id));
 	}
 }

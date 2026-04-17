@@ -16,6 +16,7 @@ import com.aplicacion.cuentas.cuenta.domain.model.Money;
 import com.aplicacion.cuentas.cuenta.domain.port.in.ConsignarUseCase;
 import com.aplicacion.cuentas.cuenta.domain.port.in.ConsultarCuentaUseCase;
 import com.aplicacion.cuentas.cuenta.domain.port.in.CrearCuentaUseCase;
+import com.aplicacion.cuentas.cuenta.domain.port.in.InactivarCuentaUseCase;
 import com.aplicacion.cuentas.cuenta.domain.port.in.RetirarUseCase;
 import com.aplicacion.cuentas.cuenta.domain.port.out.AccountNumberGeneratorPort;
 import com.aplicacion.cuentas.cuenta.domain.port.out.AccountRepositoryPort;
@@ -23,7 +24,8 @@ import com.aplicacion.cuentas.cuenta.domain.port.out.AccountRepositoryPort;
 @Service
 @Transactional
 public class CuentaApplicationService
-		implements CrearCuentaUseCase, ConsultarCuentaUseCase, ConsignarUseCase, RetirarUseCase {
+		implements CrearCuentaUseCase, ConsultarCuentaUseCase, ConsignarUseCase, RetirarUseCase,
+				InactivarCuentaUseCase {
 
 	private final AccountRepositoryPort cuentas;
 	private final AccountNumberGeneratorPort numerosCuenta;
@@ -68,6 +70,13 @@ public class CuentaApplicationService
 				.orElseThrow(() -> new CuentaNoEncontradaException(command.cuentaId()));
 		Money monto = Money.of(command.monto(), cuenta.saldo().currencyCode());
 		cuenta.retirar(new MontoOperacion(monto));
+		return cuentas.guardar(cuenta);
+	}
+
+	@Override
+	public Account inactivar(UUID id) {
+		Account cuenta = cuentas.buscarPorId(AccountId.of(id)).orElseThrow(() -> new CuentaNoEncontradaException(id));
+		cuenta.cerrar();
 		return cuentas.guardar(cuenta);
 	}
 
