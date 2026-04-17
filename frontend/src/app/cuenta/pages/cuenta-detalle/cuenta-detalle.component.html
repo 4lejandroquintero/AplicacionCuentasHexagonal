@@ -1,0 +1,66 @@
+@if (cargando()) {
+  <p class="panel__muted">Cargando...</p>
+} @else if (error()) {
+  <section class="panel">
+    <p class="panel__error">{{ error() }}</p>
+    <a class="link" routerLink="/">Volver al listado</a>
+  </section>
+} @else if (cuenta(); as c) {
+  <section class="panel">
+    <div class="panel__head">
+      <h1 class="panel__title">Cuenta {{ c.numeroCuenta }}</h1>
+      <p class="panel__lead">
+        Titular: {{ c.titular }} · Creada el {{ c.creadoEn | date: 'medium' }}
+      </p>
+    </div>
+
+    <div class="summary grid-two">
+      <div class="kpi">
+        <span class="kpi__label">Saldo</span>
+        <span class="kpi__value">{{ c.saldo | currency: c.moneda : 'symbol' : '1.2-2' }}</span>
+      </div>
+      <div class="kpi">
+        <span class="kpi__label">Estado</span>
+        <span class="kpi__value pill">{{ c.estado }}</span>
+      </div>
+    </div>
+
+    @if (mensaje()) {
+      <p class="panel__error">{{ mensaje() }}</p>
+    }
+
+    <div class="grid-two mov-grid">
+      <form class="form" [formGroup]="consignacion" (ngSubmit)="consignar()">
+        <h2 class="section-title">Consignacion</h2>
+        <label class="field">
+          <span class="field__label">Monto</span>
+          <input class="field__input" type="number" step="0.01" formControlName="monto" />
+          @if (consignacion.controls.monto.touched && consignacion.controls.monto.invalid) {
+            <span class="field__hint">Monto mayor a cero.</span>
+          }
+        </label>
+        <div class="actions">
+          <button class="btn btn--primary" type="submit" [disabled]="operando()">Aplicar</button>
+        </div>
+      </form>
+
+      <form class="form" [formGroup]="retiro" (ngSubmit)="retirar()">
+        <h2 class="section-title">Retiro</h2>
+        <label class="field">
+          <span class="field__label">Monto</span>
+          <input class="field__input" type="number" step="0.01" formControlName="monto" />
+          @if (retiro.controls.monto.touched && retiro.controls.monto.invalid) {
+            <span class="field__hint">Monto mayor a cero.</span>
+          }
+        </label>
+        <div class="actions">
+          <button class="btn btn--primary" type="submit" [disabled]="operando()">Aplicar</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="footer-nav">
+      <a class="link" routerLink="/">Volver al listado</a>
+    </div>
+  </section>
+}

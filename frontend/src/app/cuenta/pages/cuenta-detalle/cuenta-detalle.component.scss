@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.summary {
+  margin-bottom: 1.25rem;
+}
+
+.kpi {
+  border: 1px solid var(--app-border);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  background: var(--app-bg);
+}
+
+.kpi__label {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--app-muted);
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.kpi__value {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.section-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.mov-grid {
+  margin-top: 0.5rem;
+}
+
+.footer-nav {
+  margin-top: 1.25rem;
+}

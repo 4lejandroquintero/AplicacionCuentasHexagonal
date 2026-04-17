@@ -1,0 +1,41 @@
+<section class="panel">
+  <div class="panel__head">
+    <h1 class="panel__title">Cuentas</h1>
+    <p class="panel__lead">Listado de cuentas persistidas a traves del adaptador de salida.</p>
+  </div>
+
+  @if (cargando()) {
+    <p class="panel__muted">Cargando...</p>
+  } @else if (error()) {
+    <p class="panel__error">{{ error() }}</p>
+  } @else if (cuentas().length === 0) {
+    <p class="panel__muted">No hay cuentas registradas.</p>
+  } @else {
+    <div class="table-wrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Numero</th>
+            <th>Titular</th>
+            <th>Saldo</th>
+            <th>Estado</th>
+            <th>Creada</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of cuentas(); track c.id) {
+            <tr>
+              <td class="mono">{{ c.numeroCuenta }}</td>
+              <td>{{ c.titular }}</td>
+              <td>{{ c.saldo | currency: c.moneda : 'symbol' : '1.2-2' }}</td>
+              <td><span class="pill">{{ c.estado }}</span></td>
+              <td>{{ c.creadoEn | date: 'medium' }}</td>
+              <td><a class="link" [routerLink]="['/cuentas', c.id]">Detalle</a></td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
