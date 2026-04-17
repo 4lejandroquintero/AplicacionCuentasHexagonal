@@ -4,3 +4,6 @@
 /frontend/.angular/
 /.idea/
 *.log
+
+# Notas locales / sustentación (no publicar en el remoto)
+/EXPLICACION_PROYECTO.md
