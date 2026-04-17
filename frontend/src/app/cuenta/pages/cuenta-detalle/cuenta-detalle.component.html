@@ -40,19 +40,15 @@
         [class.pill--ok]="c.estado === 'ACTIVA'"
         [class.pill--muted]="c.estado === 'CERRADA'"
       >
-        {{ c.estado }}
+        {{ etiquetaEstado(c.estado) }}
       </span>
     </header>
 
-    <div class="summary grid-two">
+    <div class="summary grid-two summary--single">
       <div class="kpi">
         <span class="kpi__label">Saldo disponible</span>
         <span class="kpi__value">{{ c.saldo | currency: c.moneda : 'symbol' : '1.2-2' }}</span>
         <span class="kpi__hint">{{ c.moneda }}</span>
-      </div>
-      <div class="kpi kpi--muted">
-        <span class="kpi__label">Identificador</span>
-        <span class="kpi__mono">{{ c.id }}</span>
       </div>
     </div>
 
@@ -66,7 +62,7 @@
           <div>
             <h2 id="inactivar-title" class="section-title">Inactivar cuenta</h2>
             <p class="danger-zone__text">
-              El registro permanece en base de datos y en listados; el estado pasa a CERRADA y no habra movimientos.
+              La cuenta seguira en tu listado pero quedara cerrada: no podras consignar ni retirar.
             </p>
           </div>
           <button
@@ -82,7 +78,7 @@
     } @else {
       <div class="banner-inactiva" role="status">
         <p class="banner-inactiva__text">
-          Cuenta inactiva (CERRADA). No se permiten consignaciones ni retiros.
+          Esta cuenta esta cerrada. No puedes hacer movimientos.
         </p>
       </div>
     }
@@ -134,7 +130,7 @@
           </div>
         </div>
       } @else {
-        <p class="panel__muted mov-section__off">Los movimientos no estan disponibles para cuentas cerradas.</p>
+        <p class="panel__muted mov-section__off">No hay movimientos disponibles en cuentas cerradas.</p>
       }
     </div>
 

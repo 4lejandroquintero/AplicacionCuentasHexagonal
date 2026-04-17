@@ -4,7 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { Cuenta } from '../../domain/cuenta.model';
+import { Cuenta, EstadoCuenta } from '../../domain/cuenta.model';
 import { CUENTA_REPOSITORY } from '../../ports/cuenta.repository.port';
 
 @Component({
@@ -87,7 +87,7 @@ export class CuentaDetalleComponent implements OnInit {
       return;
     }
     const ok = confirm(
-      'La cuenta quedara inactiva (estado CERRADA) y no admitira consignaciones ni retiros. Deseas continuar?'
+      'La cuenta quedara cerrada y no podras hacer movimientos. ¿Deseas continuar?'
     );
     if (!ok) {
       return;
@@ -110,6 +110,10 @@ export class CuentaDetalleComponent implements OnInit {
     return c.estado === 'ACTIVA';
   }
 
+  protected etiquetaEstado(estado: EstadoCuenta): string {
+    return estado === 'ACTIVA' ? 'Activa' : 'Cerrada';
+  }
+
   private ejecutar(
     accion: Observable<Cuenta>,
     formulario: typeof this.consignacion | typeof this.retiro
@@ -124,7 +128,7 @@ export class CuentaDetalleComponent implements OnInit {
       },
       error: () => {
         this.operando.set(false);
-        this.mensaje.set('El movimiento fue rechazado por reglas de negocio o por el servidor.');
+        this.mensaje.set('No se pudo completar el movimiento. Revisa el monto o intenta de nuevo.');
       }
     });
   }

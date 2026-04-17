@@ -2,7 +2,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { Cuenta } from '../../domain/cuenta.model';
+import { Cuenta, EstadoCuenta } from '../../domain/cuenta.model';
 import { CUENTA_REPOSITORY } from '../../ports/cuenta.repository.port';
 
 @Component({
@@ -18,6 +18,10 @@ export class CuentaListaComponent implements OnInit {
   protected readonly cargando = signal(true);
   protected readonly error = signal<string | null>(null);
 
+  protected etiquetaEstado(estado: EstadoCuenta): string {
+    return estado === 'ACTIVA' ? 'Activa' : 'Cerrada';
+  }
+
   ngOnInit(): void {
     this.repositorio.listar().subscribe({
       next: (lista) => {
@@ -25,7 +29,7 @@ export class CuentaListaComponent implements OnInit {
         this.cargando.set(false);
       },
       error: () => {
-        this.error.set('No fue posible cargar las cuentas. Verifica que el API este en ejecucion.');
+        this.error.set('No pudimos cargar las cuentas. Intenta de nuevo en unos segundos.');
         this.cargando.set(false);
       }
     });

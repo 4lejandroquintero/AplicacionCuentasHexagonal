@@ -1,10 +1,10 @@
 <div class="page">
   <header class="page__header page-header-row">
     <div>
-      <span class="page__eyebrow">Cartera</span>
-      <h1 class="page__title">Cuentas</h1>
+      <span class="page__eyebrow">Resumen</span>
+      <h1 class="page__title">Tus cuentas</h1>
       <p class="page__lead">
-        Datos servidos por el API REST; esta vista solo consume el puerto del cliente.
+        Listado de cuentas con saldo y estado al dia.
       </p>
     </div>
     <a routerLink="/cuentas/nueva" class="btn btn--primary page-header-row__cta">Nueva cuenta</a>
@@ -28,7 +28,7 @@
     <div class="card">
       <div class="card__body empty-state">
         <p class="empty-state__title">Sin cuentas todavia</p>
-        <p class="empty-state__text">Crea la primera cuenta para ver el flujo completo dominio, API y persistencia.</p>
+        <p class="empty-state__text">Crea tu primera cuenta para empezar a registrar movimientos.</p>
         <a routerLink="/cuentas/nueva" class="btn btn--primary">Crear cuenta</a>
       </div>
     </div>
@@ -58,7 +58,7 @@
                     [class.pill--ok]="c.estado === 'ACTIVA'"
                     [class.pill--muted]="c.estado === 'CERRADA'"
                   >
-                    {{ c.estado }}
+                    {{ etiquetaEstado(c.estado) }}
                   </span>
                 </td>
                 <td class="table-date">{{ c.creadoEn | date: 'medium' }}</td>
