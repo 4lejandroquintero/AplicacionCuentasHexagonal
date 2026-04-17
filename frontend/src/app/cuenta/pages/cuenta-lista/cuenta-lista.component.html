@@ -1,41 +1,75 @@
-<section class="panel">
-  <div class="panel__head">
-    <h1 class="panel__title">Cuentas</h1>
-    <p class="panel__lead">Listado de cuentas persistidas a traves del adaptador de salida.</p>
-  </div>
+<div class="page">
+  <header class="page__header page-header-row">
+    <div>
+      <span class="page__eyebrow">Cartera</span>
+      <h1 class="page__title">Cuentas</h1>
+      <p class="page__lead">
+        Datos servidos por el API REST; esta vista solo consume el puerto del cliente.
+      </p>
+    </div>
+    <a routerLink="/cuentas/nueva" class="btn btn--primary page-header-row__cta">Nueva cuenta</a>
+  </header>
 
   @if (cargando()) {
-    <p class="panel__muted">Cargando...</p>
+    <div class="card">
+      <div class="card__body stack-gap">
+        @for (_ of [1, 2, 3, 4, 5]; track $index) {
+          <div class="skeleton skeleton-line"></div>
+        }
+      </div>
+    </div>
   } @else if (error()) {
-    <p class="panel__error">{{ error() }}</p>
+    <div class="card">
+      <div class="card__body">
+        <p class="panel__error">{{ error() }}</p>
+      </div>
+    </div>
   } @else if (cuentas().length === 0) {
-    <p class="panel__muted">No hay cuentas registradas.</p>
+    <div class="card">
+      <div class="card__body empty-state">
+        <p class="empty-state__title">Sin cuentas todavia</p>
+        <p class="empty-state__text">Crea la primera cuenta para ver el flujo completo dominio, API y persistencia.</p>
+        <a routerLink="/cuentas/nueva" class="btn btn--primary">Crear cuenta</a>
+      </div>
+    </div>
   } @else {
-    <div class="table-wrap">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Numero</th>
-            <th>Titular</th>
-            <th>Saldo</th>
-            <th>Estado</th>
-            <th>Creada</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (c of cuentas(); track c.id) {
+    <div class="card card--table">
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
             <tr>
-              <td class="mono">{{ c.numeroCuenta }}</td>
-              <td>{{ c.titular }}</td>
-              <td>{{ c.saldo | currency: c.moneda : 'symbol' : '1.2-2' }}</td>
-              <td><span class="pill">{{ c.estado }}</span></td>
-              <td>{{ c.creadoEn | date: 'medium' }}</td>
-              <td><a class="link" [routerLink]="['/cuentas', c.id]">Detalle</a></td>
+              <th scope="col">Numero</th>
+              <th scope="col">Titular</th>
+              <th scope="col" class="num">Saldo</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Alta</th>
+              <th scope="col" class="cell-actions"></th>
             </tr>
-          }
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            @for (c of cuentas(); track c.id) {
+              <tr>
+                <td class="mono">{{ c.numeroCuenta }}</td>
+                <td>{{ c.titular }}</td>
+                <td class="num">{{ c.saldo | currency: c.moneda : 'symbol' : '1.2-2' }}</td>
+                <td>
+                  <span
+                    class="pill"
+                    [class.pill--ok]="c.estado === 'ACTIVA'"
+                    [class.pill--muted]="c.estado === 'CERRADA'"
+                  >
+                    {{ c.estado }}
+                  </span>
+                </td>
+                <td class="table-date">{{ c.creadoEn | date: 'medium' }}</td>
+                <td class="cell-actions">
+                  <a class="link" [routerLink]="['/cuentas', c.id]">Ver detalle</a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
     </div>
   }
-</section>
+</div>

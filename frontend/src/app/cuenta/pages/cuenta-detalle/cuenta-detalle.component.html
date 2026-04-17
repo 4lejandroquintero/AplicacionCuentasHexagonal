@@ -1,91 +1,145 @@
 @if (cargando()) {
-  <p class="panel__muted">Cargando...</p>
-} @else if (error()) {
-  <section class="panel">
-    <p class="panel__error">{{ error() }}</p>
-    <a class="link" routerLink="/">Volver al listado</a>
-  </section>
-} @else if (cuenta(); as c) {
-  <section class="panel">
-    <div class="panel__head">
-      <h1 class="panel__title">Cuenta {{ c.numeroCuenta }}</h1>
-      <p class="panel__lead">
-        Titular: {{ c.titular }} · Creada el {{ c.creadoEn | date: 'medium' }}
-      </p>
+  <div class="page">
+    <div class="card">
+      <div class="card__body stack-gap">
+        <div class="skeleton skeleton-line" style="width: 40%"></div>
+        <div class="skeleton skeleton-line"></div>
+        <div class="skeleton skeleton-line"></div>
+      </div>
     </div>
+  </div>
+} @else if (error()) {
+  <div class="page">
+    <div class="card">
+      <div class="card__body">
+        <p class="panel__error">{{ error() }}</p>
+        <a class="link link--subtle" routerLink="/">Volver al listado</a>
+      </div>
+    </div>
+  </div>
+} @else if (cuenta(); as c) {
+  <div class="page">
+    <nav class="breadcrumb" aria-label="Ruta">
+      <a routerLink="/" class="breadcrumb__link">Cuentas</a>
+      <span class="breadcrumb__sep" aria-hidden="true">/</span>
+      <span class="breadcrumb__current mono">{{ c.numeroCuenta }}</span>
+    </nav>
+
+    <header class="page__header detalle-head">
+      <div>
+        <span class="page__eyebrow">Detalle</span>
+        <h1 class="page__title">Cuenta {{ c.numeroCuenta }}</h1>
+        <p class="page__lead detalle-head__lead">
+          <span class="detalle-head__titular">{{ c.titular }}</span>
+          <span class="detalle-head__dot">·</span>
+          <span>Alta {{ c.creadoEn | date: 'medium' }}</span>
+        </p>
+      </div>
+      <span
+        class="pill detalle-pill"
+        [class.pill--ok]="c.estado === 'ACTIVA'"
+        [class.pill--muted]="c.estado === 'CERRADA'"
+      >
+        {{ c.estado }}
+      </span>
+    </header>
 
     <div class="summary grid-two">
       <div class="kpi">
-        <span class="kpi__label">Saldo</span>
+        <span class="kpi__label">Saldo disponible</span>
         <span class="kpi__value">{{ c.saldo | currency: c.moneda : 'symbol' : '1.2-2' }}</span>
+        <span class="kpi__hint">{{ c.moneda }}</span>
       </div>
-      <div class="kpi">
-        <span class="kpi__label">Estado</span>
-        <span class="kpi__value pill">{{ c.estado }}</span>
+      <div class="kpi kpi--muted">
+        <span class="kpi__label">Identificador</span>
+        <span class="kpi__mono">{{ c.id }}</span>
       </div>
     </div>
 
     @if (mensaje()) {
-      <p class="panel__error">{{ mensaje() }}</p>
+      <p class="panel__error detalle-msg">{{ mensaje() }}</p>
     }
 
     @if (cuentaActiva(c)) {
-      <section class="panel danger-zone">
-        <h2 class="section-title">Inactivar cuenta</h2>
-        <p class="panel__muted">
-          La cuenta seguira en el sistema y en los listados, pero pasara a estado CERRADA y no permitira movimientos.
-        </p>
-        <div class="actions">
+      <section class="card danger-zone" aria-labelledby="inactivar-title">
+        <div class="card__body danger-zone__body">
+          <div>
+            <h2 id="inactivar-title" class="section-title">Inactivar cuenta</h2>
+            <p class="danger-zone__text">
+              El registro permanece en base de datos y en listados; el estado pasa a CERRADA y no habra movimientos.
+            </p>
+          </div>
           <button
-            class="btn btn--danger"
+            class="btn btn--danger danger-zone__btn"
             type="button"
             (click)="inactivarCuenta()"
             [disabled]="operando()"
           >
-            Inactivar cuenta
+            Inactivar
           </button>
         </div>
       </section>
     } @else {
-      <p class="panel__muted cuenta-inactiva-msg">
-        Esta cuenta esta inactiva (CERRADA). No se permiten movimientos.
-      </p>
+      <div class="banner-inactiva" role="status">
+        <p class="banner-inactiva__text">
+          Cuenta inactiva (CERRADA). No se permiten consignaciones ni retiros.
+        </p>
+      </div>
     }
 
-    <div class="grid-two mov-grid">
+    <div class="mov-section">
+      <h2 class="mov-section__title">Movimientos</h2>
       @if (cuentaActiva(c)) {
-      <form class="form" [formGroup]="consignacion" (ngSubmit)="consignar()">
-        <h2 class="section-title">Consignacion</h2>
-        <label class="field">
-          <span class="field__label">Monto</span>
-          <input class="field__input" type="number" step="0.01" formControlName="monto" />
-          @if (consignacion.controls.monto.touched && consignacion.controls.monto.invalid) {
-            <span class="field__hint">Monto mayor a cero.</span>
-          }
-        </label>
-        <div class="actions">
-          <button class="btn btn--primary" type="submit" [disabled]="operando()">Aplicar</button>
-        </div>
-      </form>
+        <div class="grid-two mov-grid">
+          <div class="card mov-card">
+            <div class="card__body">
+              <form class="form form--stretch" [formGroup]="consignacion" (ngSubmit)="consignar()">
+                <div class="mov-card__head">
+                  <h3 class="mov-card__title">Consignacion</h3>
+                  <p class="mov-card__hint">Acredita saldo en esta cuenta.</p>
+                </div>
+                <label class="field">
+                  <span class="field__label">Monto</span>
+                  <input class="field__input" type="number" step="0.01" formControlName="monto" />
+                  @if (consignacion.controls.monto.touched && consignacion.controls.monto.invalid) {
+                    <span class="field__hint">Mayor a cero.</span>
+                  }
+                </label>
+                <div class="actions">
+                  <button class="btn btn--primary" type="submit" [disabled]="operando()">Aplicar</button>
+                </div>
+              </form>
+            </div>
+          </div>
 
-      <form class="form" [formGroup]="retiro" (ngSubmit)="retirar()">
-        <h2 class="section-title">Retiro</h2>
-        <label class="field">
-          <span class="field__label">Monto</span>
-          <input class="field__input" type="number" step="0.01" formControlName="monto" />
-          @if (retiro.controls.monto.touched && retiro.controls.monto.invalid) {
-            <span class="field__hint">Monto mayor a cero.</span>
-          }
-        </label>
-        <div class="actions">
-          <button class="btn btn--primary" type="submit" [disabled]="operando()">Aplicar</button>
+          <div class="card mov-card">
+            <div class="card__body">
+              <form class="form form--stretch" [formGroup]="retiro" (ngSubmit)="retirar()">
+                <div class="mov-card__head">
+                  <h3 class="mov-card__title">Retiro</h3>
+                  <p class="mov-card__hint">Debita si hay saldo suficiente.</p>
+                </div>
+                <label class="field">
+                  <span class="field__label">Monto</span>
+                  <input class="field__input" type="number" step="0.01" formControlName="monto" />
+                  @if (retiro.controls.monto.touched && retiro.controls.monto.invalid) {
+                    <span class="field__hint">Mayor a cero.</span>
+                  }
+                </label>
+                <div class="actions">
+                  <button class="btn btn--primary" type="submit" [disabled]="operando()">Aplicar</button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-      </form>
+      } @else {
+        <p class="panel__muted mov-section__off">Los movimientos no estan disponibles para cuentas cerradas.</p>
       }
     </div>
 
-    <div class="footer-nav">
-      <a class="link" routerLink="/">Volver al listado</a>
-    </div>
-  </section>
+    <footer class="detalle-footer">
+      <a class="link link--subtle" routerLink="/">Volver al listado</a>
+    </footer>
+  </div>
 }

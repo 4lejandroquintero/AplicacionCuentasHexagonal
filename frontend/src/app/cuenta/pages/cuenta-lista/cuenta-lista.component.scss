@@ -1,3 +1,22 @@
-:host {
-  display: block;
+.page-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.page-header-row__cta {
+  flex-shrink: 0;
+}
+
+.card--table {
+  padding: 0;
+  overflow: hidden;
+}
+
+.table-date {
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
 }

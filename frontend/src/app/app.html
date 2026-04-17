@@ -1,15 +1,41 @@
 <div class="shell">
   <header class="shell__header">
-    <div class="shell__brand">
-      <span class="shell__title">Aplicacion Cuentas</span>
-      <span class="shell__subtitle">Arquitectura hexagonal (referencia tecnica)</span>
+    <div class="shell__top">
+      <a routerLink="/" class="shell__brand">
+        <span class="shell__mark" aria-hidden="true">
+          <svg class="shell__mark-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="8" width="32" height="24" rx="4" stroke="currentColor" stroke-width="2" />
+            <path d="M12 20h16M12 26h10" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="shell__brand-text">
+          <span class="shell__title">Cuentas</span>
+          <span class="shell__subtitle">Spring Boot API + Angular 21</span>
+        </span>
+      </a>
+      <nav class="shell__nav" aria-label="Principal">
+        <a
+          routerLink="/"
+          routerLinkActive="shell__nav-link--active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="shell__nav-link"
+        >
+          Listado
+        </a>
+        <a routerLink="/cuentas/nueva" routerLinkActive="shell__nav-link--active" class="shell__nav-link shell__nav-link--cta">
+          Nueva cuenta
+        </a>
+      </nav>
     </div>
-    <nav class="shell__nav">
-      <a routerLink="/" class="shell__link">Cuentas</a>
-      <a routerLink="/cuentas/nueva" class="shell__link shell__link--accent">Nueva cuenta</a>
-    </nav>
+    <div class="shell__meta">
+      <span class="shell__badge">Hexagonal</span>
+      <span class="shell__meta-text">Puertos y adaptadores en backend y cliente</span>
+    </div>
   </header>
   <main class="shell__main">
     <router-outlet />
   </main>
+  <footer class="shell__footer">
+    <span class="shell__footer-line">Referencia tecnica fullstack. REST en <code class="shell__code">8080</code>, UI en <code class="shell__code">4200</code>.</span>
+  </footer>
 </div>

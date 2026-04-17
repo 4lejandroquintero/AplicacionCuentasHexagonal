@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { CUENTA_REPOSITORY } from '../../ports/cuenta.repository.port';
 
 @Component({
   selector: 'app-cuenta-nueva',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './cuenta-nueva.component.html',
   styleUrl: './cuenta-nueva.component.scss'
 })

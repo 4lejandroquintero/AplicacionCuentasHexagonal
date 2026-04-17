@@ -1,34 +1,49 @@
-<section class="panel">
-  <div class="panel__head">
-    <h1 class="panel__title">Nueva cuenta</h1>
-    <p class="panel__lead">El numero de cuenta lo genera el adaptador de infraestructura del backend.</p>
-  </div>
+<div class="page">
+  <header class="page__header">
+    <span class="page__eyebrow">Alta</span>
+    <h1 class="page__title">Nueva cuenta</h1>
+    <p class="page__lead">
+      El numero de cuenta lo genera el backend (adaptador de numeracion). Solo envias titular y codigo ISO de moneda.
+    </p>
+  </header>
 
-  <form class="form" [formGroup]="formulario" (ngSubmit)="crear()">
-    <label class="field">
-      <span class="field__label">Titular</span>
-      <input class="field__input" type="text" formControlName="nombreTitular" autocomplete="name" />
-      @if (formulario.controls.nombreTitular.touched && formulario.controls.nombreTitular.invalid) {
-        <span class="field__hint">Nombre obligatorio.</span>
-      }
-    </label>
+  <div class="card">
+    <div class="card__body">
+      <form class="form form--wide" [formGroup]="formulario" (ngSubmit)="crear()">
+        <label class="field">
+          <span class="field__label">Titular</span>
+          <input class="field__input" type="text" formControlName="nombreTitular" autocomplete="name" />
+          @if (formulario.controls.nombreTitular.touched && formulario.controls.nombreTitular.invalid) {
+            <span class="field__hint">Nombre obligatorio.</span>
+          }
+        </label>
 
-    <label class="field">
-      <span class="field__label">Moneda (ISO 4217)</span>
-      <input class="field__input" type="text" formControlName="codigoMoneda" maxlength="3" />
-      @if (formulario.controls.codigoMoneda.touched && formulario.controls.codigoMoneda.invalid) {
-        <span class="field__hint">Usa tres letras, por ejemplo COP.</span>
-      }
-    </label>
+        <label class="field">
+          <span class="field__label">Moneda (ISO 4217)</span>
+          <input
+            class="field__input"
+            type="text"
+            formControlName="codigoMoneda"
+            maxlength="3"
+            placeholder="COP"
+            autocapitalize="characters"
+          />
+          @if (formulario.controls.codigoMoneda.touched && formulario.controls.codigoMoneda.invalid) {
+            <span class="field__hint">Tres letras, por ejemplo COP o USD.</span>
+          }
+        </label>
 
-    @if (error()) {
-      <p class="panel__error">{{ error() }}</p>
-    }
+        @if (error()) {
+          <p class="panel__error">{{ error() }}</p>
+        }
 
-    <div class="actions">
-      <button class="btn btn--primary" type="submit" [disabled]="enviando()">
-        {{ enviando() ? 'Creando...' : 'Crear cuenta' }}
-      </button>
+        <div class="actions form-actions">
+          <button class="btn btn--primary" type="submit" [disabled]="enviando()">
+            {{ enviando() ? 'Creando...' : 'Crear cuenta' }}
+          </button>
+          <a routerLink="/" class="btn btn--ghost">Cancelar</a>
+        </div>
+      </form>
     </div>
-  </form>
-</section>
+  </div>
+</div>

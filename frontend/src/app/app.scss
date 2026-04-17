@@ -2,68 +2,193 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  background: var(--app-bg);
-  color: var(--app-text);
+  color: var(--color-text);
 }
 
 .shell__header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.shell__top {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid var(--app-border);
-  background: var(--app-surface);
+  padding: 0.9rem 1.5rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .shell__brand {
   display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.shell__brand:hover .shell__title {
+  color: var(--color-accent);
+}
+
+.shell__mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-border);
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.shell__mark-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.shell__brand-text {
+  display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.1rem;
+  min-width: 0;
 }
 
 .shell__title {
   font-size: 1.125rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  transition: color 0.15s ease;
 }
 
 .shell__subtitle {
-  font-size: 0.8125rem;
-  color: var(--app-muted);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
 }
 
 .shell__nav {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.35rem;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-.shell__link {
+.shell__nav-link {
   text-decoration: none;
-  color: var(--app-link);
-  font-size: 0.9375rem;
-  padding: 0.35rem 0.6rem;
-  border-radius: 6px;
-  transition: background 0.15s ease;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
 }
 
-.shell__link:hover {
-  background: color-mix(in srgb, var(--app-link) 12%, transparent);
+.shell__nav-link:hover {
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
 }
 
-.shell__link--accent {
-  border: 1px solid var(--app-accent-border);
-  color: var(--app-accent-text);
-  background: var(--app-accent-soft);
+.shell__nav-link--active:not(.shell__nav-link--cta) {
+  background: var(--color-bg-subtle);
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+
+.shell__nav-link--cta {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+.shell__nav-link--cta:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #fff;
+}
+
+.shell__nav-link--cta.shell__nav-link--active {
+  box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.35);
+}
+
+.shell__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  padding: 0.5rem 1.5rem 0.75rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-top: 1px solid var(--color-border);
+  background: linear-gradient(to bottom, var(--color-bg-subtle), transparent);
+}
+
+.shell__badge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  background: var(--color-link-soft);
+  color: var(--color-link);
+  border: 1px solid rgba(29, 78, 216, 0.2);
+}
+
+.shell__meta-text {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
 }
 
 .shell__main {
   flex: 1;
-  padding: 1.5rem;
-  max-width: 960px;
+  padding: 1.75rem 1.25rem 2rem;
+  max-width: 1180px;
   width: 100%;
   margin: 0 auto;
   box-sizing: border-box;
+}
+
+.shell__footer {
+  padding: 1rem 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-subtle);
+}
+
+.shell__footer-line {
+  display: block;
+  max-width: 1180px;
+  margin: 0 auto;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.shell__code {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
 }
